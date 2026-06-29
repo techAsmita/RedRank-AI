@@ -15,7 +15,7 @@
         "start_date": "2021-06",
         "end_date": "present",
         "is_current": true,
-        "description": "Built deep learning recommendation engine serving 10M users."
+        "description": "Built deep learning recommendation engine serving 10M users in production. Reduced inference latency by 40%."
       },
       {
         "title": "Data Scientist",
@@ -23,7 +23,7 @@
         "start_date": "2019-07",
         "end_date": "2021-05",
         "is_current": false,
-        "description": "NLP models for customer support automation."
+        "description": "NLP models for customer support automation using BERT and transformers."
       }
     ],
     "education": [
@@ -35,8 +35,8 @@
       }
     ],
     "skills": {
-      "primary": ["Python", "PyTorch", "ML", "NLP"],
-      "secondary": ["SQL", "Spark", "Docker"]
+      "primary": ["Python", "PyTorch", "ML", "NLP", "RAG", "FAISS"],
+      "secondary": ["SQL", "Spark", "Docker", "A/B Testing", "Kubeflow"]
     },
     "certifications": [
       {"name": "AWS Machine Learning Specialty", "issuer": "Amazon"}
@@ -51,7 +51,8 @@
       "profile_score": 87.5,
       "is_open_to_work": true,
       "notice_period_days": 30,
-      "last_active_days": 2
+      "last_active_days": 2,
+      "response_rate": 0.9
     }
   },
   {
@@ -68,7 +69,7 @@
         "start_date": "2022-01",
         "end_date": "present",
         "is_current": true,
-        "description": "Backend systems for payment processing."
+        "description": "Backend systems for payment processing at scale."
       }
     ],
     "education": [
@@ -85,6 +86,166 @@
       "profile_score": 72.0,
       "is_open_to_work": false,
       "notice_period_days": 60
+    }
+  },
+  {
+    "candidate_id": "C003",
+    "name": "Ananya Krishnan",
+    "email": "ananya@example.com",
+    "location": "Hyderabad, India",
+    "current_title": "Senior Data Scientist",
+    "current_company": "Microsoft",
+    "summary": "PhD in ML with 7 years experience in NLP and production AI systems.",
+    "experience": [
+      {
+        "title": "Senior Data Scientist",
+        "company": "Microsoft",
+        "start_date": "2020-03",
+        "end_date": "present",
+        "is_current": true,
+        "description": "Leading NLP research for Azure AI services. Deployed transformer models serving 50M users. MLflow, Kubernetes, model evaluation pipelines."
+      },
+      {
+        "title": "Data Scientist",
+        "company": "Amazon",
+        "start_date": "2017-06",
+        "end_date": "2020-02",
+        "is_current": false,
+        "description": "Built recommendation and ranking systems for product search. A/B testing framework, NDCG optimization."
+      }
+    ],
+    "education": [
+      {
+        "degree": "PhD",
+        "field_of_study": "Machine Learning",
+        "institution": "IIT Madras",
+        "end_year": 2017
+      }
+    ],
+    "skills": {
+      "primary": ["Python", "PyTorch", "TensorFlow", "NLP", "LLM", "RAG", "Kubernetes"],
+      "secondary": ["MLflow", "FAISS", "Elasticsearch", "A/B Testing", "NDCG", "AWS", "Azure"]
+    },
+    "certifications": [
+      {"name": "Deep Learning Specialization", "issuer": "DeepLearning.AI"},
+      {"name": "Azure AI Engineer", "issuer": "Microsoft"}
+    ],
+    "languages": [
+      {"name": "English", "proficiency": "native"},
+      {"name": "Tamil", "proficiency": "native"},
+      {"name": "Hindi", "proficiency": "conversational"}
+    ],
+    "github_url": "https://github.com/ananyak",
+    "portfolio_url": "https://ananyak.dev",
+    "linkedin_url": "https://linkedin.com/in/ananyak",
+    "redrob": {
+      "profile_score": 95.0,
+      "is_open_to_work": true,
+      "notice_period_days": 90,
+      "last_active_days": 1,
+      "response_rate": 0.95
+    }
+  },
+  {
+    "candidate_id": "C004",
+    "name": "Vikram Bose",
+    "email": "vikram@example.com",
+    "location": "Pune, India",
+    "current_title": "ML Engineer",
+    "summary": "Fresher with ML skills.",
+    "experience": [
+      {
+        "title": "ML Intern",
+        "company": "StartupXYZ",
+        "start_date": "2023-06",
+        "end_date": "2023-09",
+        "is_current": false,
+        "description": "ML"
+      }
+    ],
+    "education": [
+      {
+        "degree": "B.Tech",
+        "field_of_study": "Computer Science",
+        "institution": "Some College",
+        "end_year": 2023
+      }
+    ],
+    "skills": ["Python", "TensorFlow", "Keras", "Scikit-learn", "NLP", "Computer Vision",
+               "PyTorch", "Docker", "Kubernetes", "AWS", "GCP", "Azure", "Spark",
+               "Kafka", "Redis", "MongoDB", "PostgreSQL", "React", "Node.js", "FastAPI",
+               "Django", "Flask", "MLflow", "Airflow", "Kubeflow", "FAISS", "Pinecone",
+               "Weaviate", "ChromaDB", "LangChain", "OpenAI", "HuggingFace", "BERT",
+               "GPT", "Stable Diffusion", "RAG", "Elasticsearch", "Ranking", "Reranking",
+               "A/B Testing", "NDCG", "XGBoost", "LightGBM", "CatBoost"],
+    "redrob": {
+      "profile_score": 45.0,
+      "is_open_to_work": true,
+      "notice_period_days": 0
+    }
+  },
+  {
+    "candidate_id": "C005",
+    "name": "Deepa Nair",
+    "email": "deepa@example.com",
+    "location": "Chennai, India",
+    "current_title": "Principal ML Engineer",
+    "current_company": "Swiggy",
+    "summary": "8 years building ML systems at scale across e-commerce and food tech.",
+    "experience": [
+      {
+        "title": "Principal ML Engineer",
+        "company": "Swiggy",
+        "start_date": "2022-01",
+        "end_date": "present",
+        "is_current": true,
+        "description": "Leading ML platform for real-time recommendations and ranking. Production inference serving 5M daily active users. Reduced latency from 200ms to 40ms."
+      },
+      {
+        "title": "Senior ML Engineer",
+        "company": "Ola",
+        "start_date": "2019-04",
+        "end_date": "2021-12",
+        "is_current": false,
+        "description": "ETA prediction models, dynamic pricing ML systems. Deployed on Kubernetes with MLflow tracking."
+      },
+      {
+        "title": "ML Engineer",
+        "company": "Freshworks",
+        "start_date": "2016-07",
+        "end_date": "2019-03",
+        "is_current": false,
+        "description": "NLP pipelines for customer support. Built semantic search using Elasticsearch."
+      }
+    ],
+    "education": [
+      {
+        "degree": "M.Tech",
+        "field_of_study": "Computer Science",
+        "institution": "IIT Madras",
+        "end_year": 2016
+      }
+    ],
+    "skills": {
+      "primary": ["Python", "PyTorch", "NLP", "Recommendation Systems", "Ranking", "RAG", "FAISS"],
+      "secondary": ["Kubernetes", "MLflow", "Elasticsearch", "Spark", "AWS", "A/B Testing", "NDCG"]
+    },
+    "certifications": [
+      {"name": "AWS Machine Learning Specialty", "issuer": "Amazon"}
+    ],
+    "languages": [
+      {"name": "English", "proficiency": "fluent"},
+      {"name": "Tamil", "proficiency": "native"},
+      {"name": "Malayalam", "proficiency": "native"}
+    ],
+    "github_url": "https://github.com/deepanair",
+    "linkedin_url": "https://linkedin.com/in/deepanair",
+    "redrob": {
+      "profile_score": 91.0,
+      "is_open_to_work": false,
+      "notice_period_days": 60,
+      "last_active_days": 5,
+      "response_rate": 0.85
     }
   }
 ]
