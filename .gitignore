@@ -1,0 +1,33 @@
+# Virtual environment
+venv/
+env/
+
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+dist/
+build/
+
+# Data (never commit raw competition data)
+data/raw/
+data/processed/
+models/cache/
+
+# Outputs (commit only final submission)
+outputs/
+
+# Jupyter
+.ipynb_checkpoints/
+*.ipynb
+
+# IDE
+.vscode/settings.json
+.idea/
+
+# Env
+.env
+
+# OS
+.DS_Store
+Thumbs.db
