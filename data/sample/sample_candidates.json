@@ -1,0 +1,90 @@
+[
+  {
+    "candidate_id": "C001",
+    "name": "Priya Sharma",
+    "email": "priya@example.com",
+    "location": "Bangalore, India",
+    "current_title": "ML Engineer",
+    "current_company": "Flipkart",
+    "years_of_experience": 4.5,
+    "summary": "ML Engineer with 4+ years building recommendation systems at scale.",
+    "experience": [
+      {
+        "title": "ML Engineer",
+        "company": "Flipkart",
+        "start_date": "2021-06",
+        "end_date": "present",
+        "is_current": true,
+        "description": "Built deep learning recommendation engine serving 10M users."
+      },
+      {
+        "title": "Data Scientist",
+        "company": "Freshworks",
+        "start_date": "2019-07",
+        "end_date": "2021-05",
+        "is_current": false,
+        "description": "NLP models for customer support automation."
+      }
+    ],
+    "education": [
+      {
+        "degree": "B.Tech",
+        "field_of_study": "Computer Science",
+        "institution": "IIT Bombay",
+        "end_year": 2019
+      }
+    ],
+    "skills": {
+      "primary": ["Python", "PyTorch", "ML", "NLP"],
+      "secondary": ["SQL", "Spark", "Docker"]
+    },
+    "certifications": [
+      {"name": "AWS Machine Learning Specialty", "issuer": "Amazon"}
+    ],
+    "languages": [
+      {"name": "English", "proficiency": "fluent"},
+      {"name": "Hindi", "proficiency": "native"}
+    ],
+    "github_url": "https://github.com/priyasharma",
+    "linkedin_url": "https://linkedin.com/in/priyasharma",
+    "redrob": {
+      "profile_score": 87.5,
+      "is_open_to_work": true,
+      "notice_period_days": 30,
+      "last_active_days": 2
+    }
+  },
+  {
+    "candidate_id": "C002",
+    "name": "Rahul Mehta",
+    "email": "rahul@example.com",
+    "location": "Mumbai, India",
+    "current_title": "SDE-2",
+    "current_company": "Razorpay",
+    "experience": [
+      {
+        "title": "SDE-2",
+        "company": "Razorpay",
+        "start_date": "2022-01",
+        "end_date": "present",
+        "is_current": true,
+        "description": "Backend systems for payment processing."
+      }
+    ],
+    "education": [
+      {
+        "degree": "B.E",
+        "field_of_study": "Information Technology",
+        "institution": "BITS Pilani",
+        "end_year": 2021
+      }
+    ],
+    "skills": ["Python", "Go", "Kafka", "PostgreSQL", "Redis"],
+    "languages": ["English", "Hindi"],
+    "redrob": {
+      "profile_score": 72.0,
+      "is_open_to_work": false,
+      "notice_period_days": 60
+    }
+  }
+]

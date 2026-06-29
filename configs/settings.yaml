@@ -1,0 +1,14 @@
+data:
+  raw_dir: "data/raw"
+  processed_dir: "data/processed"
+  sample_dir: "data/sample"
+  candidates_file: "candidates.jsonl"
+  sample_file: "sample_candidates.json"
+
+ingestion:
+  encoding: "utf-8"
+  log_every: 1000
+
+features:
+  min_experience_years: 0
+  max_experience_years: 50
