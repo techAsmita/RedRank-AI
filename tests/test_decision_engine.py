@@ -14,6 +14,22 @@ from src.decision.policies.technical_fit import TechnicalFitPolicy
 from src.decision.policies.production_readiness import ProductionReadinessPolicy
 from src.decision.policies.hiring_readiness import HiringReadinessPolicy
 from src.decision.policies.career_trajectory import CareerTrajectoryPolicy
+from src.decision.policies.professional_signals import ProfessionalSignalsPolicy
+from src.decision.policies.evidence_strength import EvidenceStrengthPolicy
+from src.decision.policies.jd_intent_coverage import JDIntentCoveragePolicy
+from src.decision.policies.risk_assessment import RiskAssessmentPolicy
+
+
+ALL_POLICIES = lambda: [
+    TechnicalFitPolicy(),
+    ProductionReadinessPolicy(),
+    HiringReadinessPolicy(),
+    CareerTrajectoryPolicy(),
+    ProfessionalSignalsPolicy(),
+    EvidenceStrengthPolicy(),
+    JDIntentCoveragePolicy(),
+    RiskAssessmentPolicy(),
+]
 
 
 def _build_context_for(candidate_id: str) -> DecisionContext:
@@ -51,46 +67,50 @@ def _print_policy_results(candidate_id: str, summary):
             print(f"      - [{c.field}] {c.explanation}")
 
 
-def test_decision_engine_real_pipeline_all_candidates():
-    """Run the full 4-policy Decision Engine against all 5 real candidates."""
-    evaluator = DecisionEvaluator([
-        TechnicalFitPolicy(),
-        ProductionReadinessPolicy(),
-        HiringReadinessPolicy(),
-        CareerTrajectoryPolicy(),
-    ])
+def test_decision_engine_all_8_policies_all_candidates():
+    """Run all 8 policies against all 5 real candidates."""
+    evaluator = DecisionEvaluator(ALL_POLICIES())
 
     for candidate_id in ["C001", "C002", "C003", "C004", "C005"]:
         context = _build_context_for(candidate_id)
         summary = evaluator.evaluate(context)
 
-        assert len(summary.policy_results) == 4
+        assert len(summary.policy_results) == 8
         for result in summary.policy_results:
             assert result.confidence is not None
             assert 0.0 <= result.confidence <= 1.0
+            # Evidence discipline: every PASS/PARTIAL must have at least
+            # some referenced evidence or an explicit concern explaining the gap
+            assert len(result.supporting_evidence) > 0 or len(result.concerns) > 0
 
         _print_policy_results(candidate_id, summary)
 
 
 def test_strong_candidate_passes_most_policies():
-    """C003 (PhD, Microsoft, 7yr) should PASS or PARTIAL on most policies."""
+    """C003 (PhD, Microsoft, 7yr) should not FAIL any policy."""
     context = _build_context_for("C003")
-    evaluator = DecisionEvaluator([
-        TechnicalFitPolicy(),
-        ProductionReadinessPolicy(),
-        CareerTrajectoryPolicy(),
-    ])
+    evaluator = DecisionEvaluator(ALL_POLICIES())
     summary = evaluator.evaluate(context)
 
     failing = [r for r in summary.policy_results if r.status.value == "FAIL"]
-    assert len(failing) == 0
+    assert len(failing) == 0, f"Unexpected failures: {[r.policy_name for r in failing]}"
 
 
-def test_weak_candidate_shows_concerns():
-    """C004 (fresher, 0.2y exp) should show concerns in career trajectory."""
+def test_weak_candidate_shows_risk_concerns():
+    """C004 (fresher, 44 skills, 0.2y exp) should show risk concerns."""
     context = _build_context_for("C004")
-    evaluator = DecisionEvaluator([CareerTrajectoryPolicy()])
+    evaluator = DecisionEvaluator([RiskAssessmentPolicy(), CareerTrajectoryPolicy()])
     summary = evaluator.evaluate(context)
 
-    result = summary.policy_results[0]
-    assert len(result.concerns) > 0
+    risk_result = next(r for r in summary.policy_results if r.policy_name == "Risk Assessment")
+    assert len(risk_result.concerns) > 0
+
+
+def test_evidence_strength_reflects_profile_completeness():
+    """C003 (95% complete, well-documented) should score higher evidence strength than C002 (sparse profile)."""
+    evaluator = DecisionEvaluator([EvidenceStrengthPolicy()])
+
+    c003_summary = evaluator.evaluate(_build_context_for("C003"))
+    c002_summary = evaluator.evaluate(_build_context_for("C002"))
+
+    assert c003_summary.policy_results[0].confidence >= c002_summary.policy_results[0].confidence
