@@ -40,4 +40,4 @@ def test_parse_sample_file():
     """Full sample file parses without errors."""
     records = load_json("data/sample/sample_candidates.json")
     candidates = parse_candidates(records)
-    assert len(candidates) == 2
+    assert len(candidates) == len(records)
