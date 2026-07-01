@@ -23,6 +23,7 @@ class TechnicalIntelligence:
     has_mlops: bool = False                 # MLflow/Kubeflow/Airflow/Docker/K8s
     python_adjacent_skills: list = field(default_factory=list)   # Evidence list
     ai_skill_categories: list = field(default_factory=list)      # Evidence list
+    all_skills: list = field(default_factory=list)               # All normalized skill names
 
 
 @dataclass

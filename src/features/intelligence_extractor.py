@@ -146,7 +146,8 @@ def _experience_text(exp: Experience) -> str:
 
 def _extract_technical(candidate: Candidate) -> TechnicalIntelligence:
     ti = TechnicalIntelligence()
-    skills = set(s.lower() for s in candidate.skills.all_skills)
+    skills = set(s.name.lower() for s in candidate.skills if s.name)
+    ti.all_skills = sorted(skills)
 
     # Combined text from all experience descriptions
     all_exp_text = " ".join(_experience_text(e) for e in candidate.experience)
@@ -350,17 +351,32 @@ def _extract_education(candidate: Candidate) -> EducationIntelligence:
 
 # ── Behavior Intelligence ─────────────────────────────────────────────────────
 
+def _days_since(date_str):
+    """Compute days between a real-schema date string (YYYY-MM-DD) and now."""
+    if not date_str:
+        return None
+    try:
+        dt = datetime.strptime(date_str, "%Y-%m-%d")
+        return (datetime.now() - dt).days
+    except (ValueError, TypeError):
+        return None
+
+
 def _extract_behavior(candidate: Candidate) -> BehaviorIntelligence:
     bi = BehaviorIntelligence()
     r = candidate.redrob
 
-    bi.has_github = bool(r.github_url)
-    bi.has_portfolio = bool(r.portfolio_url)
-    bi.has_linkedin = bool(r.linkedin_url)
-    bi.is_open_to_work = bool(r.is_open_to_work)
+    # Real schema gives activity SCORES/flags, not URLs.
+    # github_activity_score is 0-10; treat >0 as "has activity".
+    bi.has_github = bool(r.github_activity_score and r.github_activity_score > 0)
+    bi.has_portfolio = False  # not present in real schema
+    bi.has_linkedin = bool(r.linkedin_connected)
+
+    bi.is_open_to_work = bool(r.open_to_work_flag)
     bi.notice_period_days = r.notice_period_days
-    bi.last_active_days = r.last_active_days
-    bi.response_rate = r.response_rate
+
+    bi.last_active_days = _days_since(r.last_active_date)
+    bi.response_rate = r.recruiter_response_rate
 
     bi.certification_count = len(candidate.certifications)
     ai_certs = []
@@ -383,9 +399,9 @@ def _extract_behavior(candidate: Candidate) -> BehaviorIntelligence:
         bool(candidate.profile.summary),
         bool(candidate.experience),
         bool(candidate.education),
-        bool(candidate.skills.all_skills),
-        bool(r.linkedin_url),
-        bool(r.github_url or r.portfolio_url),
+        bool(candidate.skills),
+        bool(r.linkedin_connected),
+        bool(r.github_activity_score and r.github_activity_score > 0),
     ]
     bi.profile_completeness = round(sum(checks) / len(checks), 2)
 
@@ -445,7 +461,7 @@ def _extract_risk(candidate: Candidate, career: CareerIntelligence) -> RiskIntel
     ri.job_hopping_flag = career.job_hopping_rate > 0.5
 
     # Skill inflation: >40 skills with <2 years experience
-    skill_count = len(candidate.skills.all_skills)
+    skill_count = len(candidate.skills)
     ri.skill_inflation_flag = (
         skill_count > 40 and career.total_experience_years < 2
     )

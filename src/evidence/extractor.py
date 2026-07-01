@@ -149,7 +149,7 @@ def _build_skill_evidence(
 # ── Individual evidence extractors ────────────────────────────────────────────
 
 def _evidence_python(intel: CandidateIntelligence) -> EvidenceNode:
-    skills = intel.technical.normalized_skills if hasattr(intel.technical, 'normalized_skills') else []
+    skills = intel.technical.all_skills
     candidate_skills = intel.technical.python_adjacent_skills + (
         ["python"] if intel.technical.python_depth > 0 else []
     )
@@ -163,7 +163,7 @@ def _evidence_python(intel: CandidateIntelligence) -> EvidenceNode:
 
 
 def _evidence_retrieval(intel: CandidateIntelligence) -> EvidenceNode:
-    all_skills = getattr(intel.technical, 'normalized_skills', [])
+    all_skills = intel.technical.all_skills
     return _build_skill_evidence(
         requirement="Retrieval",
         candidate_skills=all_skills,
@@ -174,7 +174,7 @@ def _evidence_retrieval(intel: CandidateIntelligence) -> EvidenceNode:
 
 
 def _evidence_evaluation(intel: CandidateIntelligence) -> EvidenceNode:
-    all_skills = getattr(intel.technical, 'normalized_skills', [])
+    all_skills = intel.technical.all_skills
     return _build_skill_evidence(
         requirement="Evaluation",
         candidate_skills=all_skills,
@@ -184,7 +184,7 @@ def _evidence_evaluation(intel: CandidateIntelligence) -> EvidenceNode:
 
 
 def _evidence_mlops(intel: CandidateIntelligence) -> EvidenceNode:
-    all_skills = getattr(intel.technical, 'normalized_skills', [])
+    all_skills = intel.technical.all_skills
     return _build_skill_evidence(
         requirement="MLOps",
         candidate_skills=all_skills,
@@ -194,7 +194,7 @@ def _evidence_mlops(intel: CandidateIntelligence) -> EvidenceNode:
 
 
 def _evidence_cloud(intel: CandidateIntelligence) -> EvidenceNode:
-    all_skills = getattr(intel.technical, 'normalized_skills', [])
+    all_skills = intel.technical.all_skills
     return _build_skill_evidence(
         requirement="Cloud",
         candidate_skills=all_skills,
@@ -204,7 +204,7 @@ def _evidence_cloud(intel: CandidateIntelligence) -> EvidenceNode:
 
 
 def _evidence_vector_db(intel: CandidateIntelligence) -> EvidenceNode:
-    all_skills = getattr(intel.technical, 'normalized_skills', [])
+    all_skills = intel.technical.all_skills
     return _build_skill_evidence(
         requirement="Vector DB",
         candidate_skills=all_skills,
@@ -214,7 +214,7 @@ def _evidence_vector_db(intel: CandidateIntelligence) -> EvidenceNode:
 
 
 def _evidence_ranking(intel: CandidateIntelligence) -> EvidenceNode:
-    all_skills = getattr(intel.technical, 'normalized_skills', [])
+    all_skills = intel.technical.all_skills
     return _build_skill_evidence(
         requirement="Ranking",
         candidate_skills=all_skills,
