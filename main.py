@@ -141,7 +141,7 @@ def write_submission_csv(
 
     with open(output_path, "w", newline="", encoding="utf-8") as f:
         writer = csv.writer(f)
-        writer.writerow(["rank", "candidate_id", "score", "reasoning"])
+        writer.writerow(["candidate_id", "rank", "score", "reasoning"])
 
         for score in ranked_candidates:
             intel = intelligence_map.get(score.candidate_id)
@@ -159,8 +159,8 @@ def write_submission_csv(
                     )
 
             writer.writerow([
-                score.rank,
                 score.candidate_id,
+                score.rank,
                 round(score.fusion_score, 6),
                 reasoning_text,
             ])

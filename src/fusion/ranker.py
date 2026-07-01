@@ -76,7 +76,7 @@ def _tiebreak_key(
 
     return (
         _tier_order(score),           # Tier first (Tier 1 before Tier 2)
-        -round(score.fusion_score, 3),  # Higher score = better (negated)
+        -round(score.fusion_score, 4),  # Higher score = better (negated)
         notice,                        # Shorter notice = better
         last_active,                   # More recent = better
         -experience,                   # More experience = better (negated)
