@@ -2,12 +2,12 @@ team_name: "Agent X"
 
 primary_contact:
   name: "Asmita Roy"
-  email: "FILL_YOUR_EMAIL"
-  phone: "+91-FILL_YOUR_PHONE"
+  email: "asmitaasmani@gmail.com"
+  phone: "+91-8800662025"
 
 team_members:
   - name: "Asmita Roy"
-    email: "FILL_YOUR_EMAIL"
+    email: "asmitaasmani@gmail.com"
     role: "Team Lead"
 
 github_repo: "https://github.com/techAsmita/RedRank-AI"
