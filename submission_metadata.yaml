@@ -1,0 +1,61 @@
+team_name: "Agent X"
+
+primary_contact:
+  name: "Asmita Roy"
+  email: "FILL_YOUR_EMAIL"
+  phone: "+91-FILL_YOUR_PHONE"
+
+team_members:
+  - name: "Asmita Roy"
+    email: "FILL_YOUR_EMAIL"
+    role: "Team Lead"
+
+github_repo: "https://github.com/techAsmita/RedRank-AI"
+
+sandbox_link: "https://huggingface.co/spaces/techAsmita/redrank-ai"
+
+reproduce_command: "python3 main.py --candidates ./candidates.jsonl --jd ./job_description.docx --output ./outputs/agent_x.csv"
+
+compute:
+  platform: "MacBook Air M1"
+  cpu_cores: 8
+  ram_gb: 16
+  python_version: "3.9.6"
+  os: "macOS"
+  uses_gpu_for_inference: false
+  has_network_during_ranking: false
+  pre_computation_required: false
+  pre_computation_time_minutes: 0
+
+ai_tools_used:
+  - "Claude"
+  - "ChatGPT"
+
+ai_usage_summary: |
+  Claude and ChatGPT were used as senior engineering collaborators for
+  architecture design, code review, debugging, and implementation guidance.
+  No candidate data was fed to any LLM during ranking. All ranking logic
+  is deterministic and runs entirely offline.
+
+methodology_summary: |
+  RedRank AI transforms each candidate into a CandidateIntelligence object
+  capturing technical depth, career trajectory, behavioral signals, and risk
+  flags. A deterministic Evidence Graph connects candidate signals to JD
+  requirements without embeddings or similarity search. Eight independent
+  Decision Policies evaluate fit across technical, production readiness,
+  career, hiring readiness, professional signals, evidence strength, JD intent
+  coverage, and risk dimensions. A Decision Fusion Engine applies hard gates
+  (pure research disqualifier, keyword-only profiles), anchor scoring via
+  minimum of four policy confidences enforcing broad competence, and weighted
+  booster signals for fine-grained ordering. Recruiter response rate acts as
+  an independent score multiplier. The system explicitly models the JD's
+  warning against keyword-trap candidates by rewarding evidence-corroborated
+  skills over keyword density. Runtime approximately 120 seconds for 100,000
+  candidates on CPU with no external API calls.
+
+declarations:
+  read_submission_spec: true
+  code_is_original_work: true
+  no_collusion: true
+  honeypot_check_done: true
+  reproduction_tested: true
