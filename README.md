@@ -18,7 +18,7 @@ This is not hiring. This is CTRL+F at scale.
 
 The Redrob challenge explicitly warns against this trap:
 
-> *"The right answer is not find candidates whose skills section contains the most AI keywords. That is a trap we have explicitly built into the dataset."*
+> "The right answer is not find candidates whose skills section contains the most AI keywords. That is a trap we have explicitly built into the dataset."
 
 RedRank AI was designed from day one to avoid this trap — and to explain, for every candidate, exactly why they ranked where they did.
 
@@ -40,7 +40,7 @@ This distinction drives every architectural decision in the system.
 
 ## Pipeline
 
-**Candidate** → **Intelligence** → **Evidence Graph** → **Job Intent** → **8 Decision Policies** → **Decision Fusion Engine** → **Top-100 Ranked Output**
+Candidate → Intelligence → Evidence Graph → Job Intent → 8 Decision Policies → Decision Fusion Engine → Top-100 Ranked Output
 
 Every step is deterministic, explainable, and CPU-only.
 
@@ -52,18 +52,18 @@ Every step is deterministic, explainable, and CPU-only.
 Streaming JSONL ingestion processes 100,000 candidates without loading the file into memory. Pydantic models match the real Redrob schema exactly, preserving rich skill signals (proficiency, endorsements, duration per skill) that flat keyword lists discard.
 
 ### Phase 2 — Candidate Intelligence
-Every candidate is transformed into a `CandidateIntelligence` object with 40+ deterministic signals across five dimensions:
+Every candidate is transformed into a CandidateIntelligence object with 40+ deterministic signals across five dimensions:
 
-- **TechnicalIntelligence** — Python depth, AI/ML category coverage, vector DB presence, retrieval/ranking/evaluation evidence, production AI deployment signals
-- **CareerIntelligence** — total and AI-specific experience, seniority level, career growth rate, job-hopping rate, company diversity, startup ratio
-- **EducationIntelligence** — degree tier, STEM flag, elite institution detection, AI/ML focus
-- **BehaviorIntelligence** — GitHub activity, certifications, platform engagement, notice period, response rate
-- **RiskIntelligence** — timeline gaps, overlaps, skill inflation, suspicious skill counts, missing data ratios
+- TechnicalIntelligence — Python depth, AI/ML category coverage, vector DB presence, retrieval/ranking/evaluation evidence, production AI deployment signals
+- CareerIntelligence — total and AI-specific experience, seniority level, career growth rate, job-hopping rate, company diversity, startup ratio
+- EducationIntelligence — degree tier, STEM flag, elite institution detection, AI/ML focus
+- BehaviorIntelligence — GitHub activity, certifications, platform engagement, notice period, response rate
+- RiskIntelligence — timeline gaps, overlaps, skill inflation, suspicious skill counts, missing data ratios
 
-### Phase 3 — Job Intent + Evidence Graph
-A deterministic rule-based parser extracts structured recruiter intent from the JD — no LLM, no embeddings, fully reproducible. The result is a `JobIntent` object capturing explicit requirements, preferred skills, behavioral expectations, and disqualifiers.
+### Phase 3 — Job Intent and Evidence Graph
+A deterministic rule-based parser extracts structured recruiter intent from the JD — no LLM, no embeddings, fully reproducible. The result is a JobIntent object capturing explicit requirements, preferred skills, behavioral expectations, and disqualifiers.
 
-An `EvidenceGraph` then connects each candidate's intelligence to each JD requirement, producing 19 `EvidenceNode` objects. Each node has a strength score (0.0–1.0), a confidence label (STRONG / MODERATE / WEAK / NONE), a list of source references, and a human-readable note. No claim is made without a traceable source.
+An EvidenceGraph then connects each candidate's intelligence to each JD requirement, producing 19 EvidenceNode objects. Each node has a strength score (0.0 to 1.0), a confidence label (STRONG / MODERATE / WEAK / NONE), a list of source references, and a human-readable note. No claim is made without a traceable source.
 
 ### Phase 4 — Decision Policy Engine
 Eight independent policies evaluate the candidate, each answering one recruiter question:
@@ -76,39 +76,40 @@ Eight independent policies evaluate the candidate, each answering one recruiter 
 | Career Trajectory | Does the career show healthy growth and stability? |
 | Professional Signals | Does the profile demonstrate engineering maturity? |
 | Evidence Strength | How trustworthy is the available evidence overall? |
-| JD Intent Coverage | How well does the candidate satisfy recruiter intent (not keywords)? |
+| JD Intent Coverage | How well does the candidate satisfy recruiter intent, not keywords? |
 | Risk Assessment | What hiring risks exist for this candidate? |
 
 Each policy returns PASS / PARTIAL / FAIL, a confidence score, supporting evidence, concerns, and a decision trace. Policies do not communicate with each other. No overall score is computed at this stage.
 
-An `EvidenceValidator` audits every policy result and rejects any conclusion not backed by a traceable evidence reference.
+An EvidenceValidator audits every policy result and rejects any conclusion not backed by a traceable evidence reference.
 
 ### Phase 5 — Decision Fusion Engine
-The fusion engine models how an experienced recruiter resolves conflicting signals:
+The fusion engine models how an experienced recruiter resolves conflicting signals.
 
-**Hard Gates** (eliminate before scoring):
+Hard Gates eliminate before scoring:
 - Pure research background with no production deployment
 - Keyword-only profiles with no corroborating career evidence
 - Zero recruiter engagement combined with long platform inactivity
 
-**Anchor Scoring** (sets rank tier):
-- Tier score = minimum of Technical Fit, Production Readiness, JD Intent Coverage, Career Trajectory confidences
-- Why minimum? A candidate who is mediocre in one anchor dimension should not be elevated by strength in another — this directly models the JD's "we'd rather see 10 great matches than 1000 maybes" philosophy
+Anchor Scoring sets rank tier:
+- Tier score equals the minimum of Technical Fit, Production Readiness, JD Intent Coverage, and Career Trajectory confidences
+- Why minimum? A candidate who is mediocre in one anchor dimension should not be elevated by strength in another — this directly models the JD philosophy of preferring 10 great matches over 1000 maybes
 
-**Conflict Resolution** (5 named rules):
+Conflict Resolution applies 5 named rules:
 - Technical PASS + Hiring FAIL → demote one tier
 - High risk + strong technical → 15% booster penalty
 - Strong evidence + wrong domain → evidence strength capped
 - Career PASS + Intent FAIL → demote one tier
 - Production PASS + Evidence weak → tier score penalty
 
-**Booster Scoring** (fine-grained ordering within tier):
-- Hiring Readiness (25%), Professional Signals (20%), Evidence Strength (20%), Risk Assessment (20%), Career Growth (15%)
+Booster Scoring handles fine-grained ordering within tier:
+- Hiring Readiness 25%, Professional Signals 20%, Evidence Strength 20%, Risk Assessment 20%, Career Growth 15%
 
-**Response Rate Multiplier**:
-- Recruiter response rate acts as an independent score dampener — a perfect-on-paper candidate with 5% response rate is genuinely deprioritized, matching the JD's explicit instruction
+Response Rate Multiplier:
+- Recruiter response rate acts as an independent score dampener
+- A perfect-on-paper candidate with 5% response rate is genuinely deprioritized
 
-**Final fusion score**: `(tier_score * 0.70 + booster_score * 0.30) * response_multiplier`
+Final fusion score: (tier_score x 0.70 + booster_score x 0.30) x response_multiplier
 
 ---
 
@@ -119,8 +120,8 @@ The fusion engine models how an experienced recruiter resolves conflicting signa
 | Candidates processed | 100,000 |
 | Runtime | 116.7 seconds |
 | Memory | Well within 16GB |
-| Skipped / errored | 0 |
-| Gate failures (filtered) | 33,075 |
+| Skipped or errored | 0 |
+| Gate failures filtered | 33,075 |
 | Tier 1 candidates | 106 |
 | Tier 2 candidates | 11,549 |
 | Submission validation | PASSED |
@@ -145,81 +146,74 @@ Instead:
 
 ## How to Run
 
-```bash
-git clone https://github.com/techAsmita/RedRank-AI.git
-cd RedRank-AI
-python3 -m venv venv
-source venv/bin/activate
-pip install -r requirements.txt
-python -m spacy download en_core_web_sm
+    git clone https://github.com/techAsmita/RedRank-AI.git
+    cd RedRank-AI
+    python3 -m venv venv
+    source venv/bin/activate
+    pip install -r requirements.txt
+    python -m spacy download en_core_web_sm
+    python3 main.py --candidates ./candidates.jsonl --jd ./job_description.docx --output ./outputs/agent_x.csv
 
-python3 main.py \
-  --candidates ./candidates.jsonl \
-  --jd ./job_description.docx \
-  --output ./outputs/agent_x.csv
-```
+Validate:
 
-Validate submission:
-```bash
-python3 validate_submission.py outputs/agent_x.csv
-```
+    python3 validate_submission.py outputs/agent_x.csv
 
 ---
 
 ## Project Structure
 
-redrank-ai/
-├── main.py                        # Single entry point
-├── src/
-│   ├── ingestion/                 # Phase 1 — Data Foundation
-│   │   ├── loader.py              # Streaming JSONL
-│   │   ├── models.py              # Pydantic candidate models
-│   │   └── parser.py              # Raw JSON → Candidate objects
-│   ├── features/                  # Phase 2 — Intelligence
-│   │   ├── intelligence_models.py # CandidateIntelligence dataclasses
-│   │   ├── intelligence_extractor.py
-│   │   └── preprocessing.py
-│   ├── job_intelligence/          # Phase 3 — Job Intent
-│   │   ├── models.py
-│   │   ├── parser.py
-│   │   ├── extractor.py
-│   │   ├── taxonomy.py
-│   │   └── patterns.py
-│   ├── evidence/                  # Phase 3 — Evidence Graph
-│   │   ├── models.py
-│   │   ├── extractor.py
-│   │   └── printer.py
-│   ├── decision/                  # Phase 4 — Decision Policies
-│   │   ├── policies/
-│   │   │   ├── technical_fit.py
-│   │   │   ├── production_readiness.py
-│   │   │   ├── hiring_readiness.py
-│   │   │   ├── career_trajectory.py
-│   │   │   ├── professional_signals.py
-│   │   │   ├── evidence_strength.py
-│   │   │   ├── jd_intent_coverage.py
-│   │   │   └── risk_assessment.py
-│   │   ├── evaluator.py
-│   │   ├── validator.py
-│   │   └── explanation.py
-│   └── fusion/                    # Phase 5 — Decision Fusion
-│       ├── engine.py              # DecisionFusionEngine
-│       ├── gates.py               # Hard gate evaluator
-│       ├── aggregator.py          # Anchor + booster scoring
-│       ├── resolver.py            # Conflict resolution
-│       ├── ranker.py              # Top-100 generator
-│       └── reasoning.py          # Per-candidate reasoning
-├── configs/
-│   └── settings.yaml
-├── outputs/
-│   └── agent_x.csv               # Final submission
-└── tests/                        # 25+ tests across all phases
+    redrank-ai/
+    ├── main.py
+    ├── src/
+    │   ├── ingestion/
+    │   │   ├── loader.py
+    │   │   ├── models.py
+    │   │   └── parser.py
+    │   ├── features/
+    │   │   ├── intelligence_models.py
+    │   │   ├── intelligence_extractor.py
+    │   │   └── preprocessing.py
+    │   ├── job_intelligence/
+    │   │   ├── models.py
+    │   │   ├── parser.py
+    │   │   ├── extractor.py
+    │   │   ├── taxonomy.py
+    │   │   └── patterns.py
+    │   ├── evidence/
+    │   │   ├── models.py
+    │   │   ├── extractor.py
+    │   │   └── printer.py
+    │   ├── decision/
+    │   │   ├── policies/
+    │   │   │   ├── technical_fit.py
+    │   │   │   ├── production_readiness.py
+    │   │   │   ├── hiring_readiness.py
+    │   │   │   ├── career_trajectory.py
+    │   │   │   ├── professional_signals.py
+    │   │   │   ├── evidence_strength.py
+    │   │   │   ├── jd_intent_coverage.py
+    │   │   │   └── risk_assessment.py
+    │   │   ├── evaluator.py
+    │   │   ├── validator.py
+    │   │   └── explanation.py
+    │   └── fusion/
+    │       ├── engine.py
+    │       ├── gates.py
+    │       ├── aggregator.py
+    │       ├── resolver.py
+    │       ├── ranker.py
+    │       └── reasoning.py
+    ├── configs/
+    │   └── settings.yaml
+    ├── outputs/
+    │   └── agent_x.csv
+    └── tests/
 
 ---
 
 ## Team
 
-**Team Agent X**
+Team Agent X
 Built for the Redrob AI Intelligent Candidate Discovery and Ranking Challenge.
 
-*Hiring people, not keywords.*
+Hiring people, not keywords.
